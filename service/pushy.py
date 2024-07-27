@@ -2,6 +2,7 @@ import json
 import urllib
 import requests
 import os
+import handler.datatype_handler as datatype_handler
 
 api_key = os.environ.get('PUSHY_API_KEY')
 
@@ -24,7 +25,7 @@ class PushyAPI:
       # print(f'in pushyAPI {json.dumps(postData)}')
       try:
          # Actually send the push
-         response = requests.post(url, headers=headers, data=json.dumps(postData))
+         response = requests.post(url, headers=headers, data=json.dumps(postData, indent=4, sort_keys=True, default=datatype_handler.datetime_handler))
          response.raise_for_status()  # Raise an HTTPError if the response was an HTTP error
          return response
       except requests.exceptions.HTTPError as e:

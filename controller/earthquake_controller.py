@@ -4,6 +4,7 @@ import json
 import service.repository as repo
 from data.disaster_report import DisasterReport
 from data.disaster_record import DisasterRecord
+import handler.datatype_handler as datatype_handler
 
 def get_eq_geohash(details):
 	geohash = bmkg.get_geohash(details["latitude"], details["longitude"], details["type"])
@@ -20,8 +21,8 @@ def publish_to_pushy_latest_eq():
 		data['message'] = message
 		data['data'] = latest_eq
 
-		data_json = json.dumps(data)
-		# print(f'data_json: {data_json}')
+		data_json = json.dumps(data, default=datatype_handler.datetime_handler)
+		print(f'data_json: {data_json}')
 		notifier.notify(latest_geohash, data, message)
 		notifier.notify('jakarta', data, message)
 		return 'Success'
