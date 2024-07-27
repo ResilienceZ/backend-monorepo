@@ -49,14 +49,11 @@ def get_emergency_contact(req: func.HttpRequest) -> func.HttpResponse:
 
 @app.route(route="push_notification")
 def send_push_notification(req: func.HttpRequest) -> func.HttpResponse:
-    print('in send_push_notification')
     try:
-        print(f'req {str(req)}')
         req_body = req.get_json()
         to = req_body.get('to')
         message = req_body.get('message')
         data = {'message': message}
-        print(f'to {to}, data {data}')
         notifier.notify(to, data, message)
 
         return func.HttpResponse(
@@ -98,12 +95,10 @@ def push_disaster_alert(req: func.HttpRequest) -> func.HttpResponse:
                     status_code=500
                 )
 
-@app.route(route="test/checkdb")
+@app.route(route="bmkg/check_for_new_disaster")
 def check_for_new_disaster(req: func.HttpRequest) -> func.HttpResponse:
     try:
-        print('in check_for_new_disaster')
         new_disaster = earthquake_controller.is_new_disaster()
-        print(f'new_disaster: {new_disaster}')
         if new_disaster == False:
             return func.HttpResponse(
                 f"No new disaster",
@@ -125,16 +120,12 @@ def check_for_new_disaster(req: func.HttpRequest) -> func.HttpResponse:
               arg_name="timer",
               run_on_startup=True)
 def get_eq_data_timer(timer: func.TimerRequest) -> None:
-    print('in get_eq_data_timer')
     new_disaster = earthquake_controller.is_new_disaster()
-    print(new_disaster)
-    if new_disaster == False:
-        print('No new disaster')
-    else:
+    if new_disaster == True:
         result_message = earthquake_controller.publish_to_pushy_latest_eq()
 
     utc_timestamp = datetime.datetime.utcnow().replace(
         tzinfo=datetime.timezone.utc).isoformat()
-    if timer.past_due:
-        logging.info('The timer is past due!')
-    logging.info('Python timer trigger function ran at %s', utc_timestamp)
+    # if timer.past_due:
+    #     logging.info('The timer is past due!')
+    # logging.info('Python timer trigger function ran at %s', utc_timestamp)

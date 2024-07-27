@@ -21,7 +21,7 @@ class PushyAPI:
          'Content-Type': 'application/json'
       }
 
-      print(f'in pushyAPI {json.dumps(postData)}')
+      # print(f'in pushyAPI {json.dumps(postData)}')
       try:
          # Actually send the push
          response = requests.post(url, headers=headers, data=json.dumps(postData))

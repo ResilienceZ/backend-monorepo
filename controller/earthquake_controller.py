@@ -21,7 +21,7 @@ def publish_to_pushy_latest_eq():
 		data['data'] = latest_eq
 
 		data_json = json.dumps(data)
-		print(f'data_json: {data_json}')
+		# print(f'data_json: {data_json}')
 		notifier.notify(latest_geohash, data, message)
 		notifier.notify('jakarta', data, message)
 		return 'Success'
@@ -32,14 +32,12 @@ def is_new_disaster():
 
 	latest_eq = bmkg.fetch_latest_eq()
 	latest_eq_timestamp = latest_eq['timestamp']
-	print(f'latest_eq_timestamp: {str(latest_eq_timestamp)}')
 
 	is_new = True
 
 	last_record = repo.get_latest_record()
 	if len(last_record) > 0:
 		last_timestamp = getattr(last_record[0], 'timestamp')
-		print(f'last_timestamp: {str(last_timestamp)}')
 		if latest_eq_timestamp == last_timestamp:
 			is_new = False
 			return False

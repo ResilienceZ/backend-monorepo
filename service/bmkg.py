@@ -14,10 +14,8 @@ def fetch_latest_eq():
     magnitude = float(earthquake_obj["Magnitude"])
     depth = earthquake_obj["Kedalaman"]
     timestamp = earthquake_obj["DateTime"]
-    print(f'timestamp: {timestamp}')
     timestamp = timestamp.replace("+00:00", "")
     timestamp = datetime.fromisoformat(timestamp)
-    print(f'timestamp: {timestamp}')
 
     feel_data = earthquake_obj["Dirasakan"].split(" ")
     feel_scale = feel_data[0]
