@@ -10,7 +10,7 @@ def notify(destination_topic: str, message: str):
             'badge': 1,
             'sound': 'ping.aiff',
             'title': 'Test Notification',
-            'body': u'Hello World \u270c'
+            'body': message
         }
     }
 
