@@ -4,7 +4,7 @@ import service.bmkg as bmkg
 import service.notifier as notifier
 import json
 import os
-import service.repository as repo
+import service.dbservice as repo
 import service.notifier as notifier
 import constants
 import controller.earthquake_controller as earthquake_controller
