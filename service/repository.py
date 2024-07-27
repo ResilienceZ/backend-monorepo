@@ -6,6 +6,10 @@ def get_latest_record(limit: int = 1):
     query = "SELECT * FROM disaster_records ORDER BY timestamp DESC LIMIT %s;"
     return db.exec_select(query, (limit,))
 
+def get_latest_record_with_type(dtype: str, limit: int = 1):
+    query = "SELECT * FROM disaster_records WHERE type=%s ORDER BY timestamp DESC LIMIT %s;"
+    return db.exec_select(query, (dtype, limit,))
+
 def insert_record(record: DisasterRecord):
     query = """
         INSERT INTO public.disaster_records (description, severity, scale, longitude, latitude, type, timestamp)
