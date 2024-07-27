@@ -2,21 +2,13 @@
   "name": "backend-monorepo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ResilienceZ/backend-monorepo.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ResilienceZ/backend-monorepo/issues"
-  },
-  "homepage": "https://github.com/ResilienceZ/backend-monorepo#readme",
   "dependencies": {
-    "express": "^4.19.2"
-  }
+    "@azure/functions": "^4.0.0"
+  },
+  "devDependencies": {},
+  "main": "src/{index.js,functions/*.js}"
 }
