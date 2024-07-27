@@ -1,14 +1,14 @@
 import azure.functions as func
 import logging
 import datetime
-import service.bmkg as bmkg
-import service.notifier as notifier
+import bmkg as bmkg
+import notifier as notifier
 import json
 import os
-import service.dbservice as repo
-import service.notifier as notifier
+import dbservice as repo
+import notifier as notifier
 import constants
-import controller.earthquake_controller as earthquake_controller
+import earthquake_controller as earthquake_controller
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
         

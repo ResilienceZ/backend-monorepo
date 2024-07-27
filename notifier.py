@@ -1,4 +1,4 @@
-from service.pushy import PushyAPI
+from pushy import PushyAPI
 
 def notify(destination_topic: str, data: str, message: str):
     data = data

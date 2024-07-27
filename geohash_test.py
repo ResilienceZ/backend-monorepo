@@ -1,5 +1,5 @@
 import unittest
-from service.geohash import GeoHash
+from geohash import GeoHash
 
 class TestGeohash(unittest.TestCase):
     def test_geohash(self):

@@ -1,6 +1,6 @@
-import service.dbservice as db
-from data.disaster_report import DisasterReport
-from data.disaster_record import DisasterRecord
+import dbservice as db
+from disaster_report import DisasterReport
+from disaster_record import DisasterRecord
 
 # Diaster Record
 def get_latest_record(limit: int = 1):

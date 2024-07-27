@@ -1,5 +1,5 @@
-import service.bmkg as bmkg
-import service.notifier as notifier
+import bmkg as bmkg
+import notifier as notifier
 import json
 
 def get_eq_geohash(details):

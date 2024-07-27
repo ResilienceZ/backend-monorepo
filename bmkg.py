@@ -1,6 +1,6 @@
 import requests
 import constants
-from service.geohash import GeoHash
+from geohash import GeoHash
 
 def fetch_latest_eq():
     response = requests.get("https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json")
