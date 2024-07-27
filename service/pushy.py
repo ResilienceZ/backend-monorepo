@@ -1,11 +1,11 @@
 import json
 import urllib2
 
+pushy_api_key = os.environ.get('PUSHY_API_KEY')
+
 class PushyAPI:
     @staticmethod
     def sendPushNotification(data, to, options):
-        # Insert your Pushy Secret API Key here
-        apiKey = 'SECRET_API_KEY';
 
         # Default post data to provided options or empty object
         postData = options or {}
@@ -15,7 +15,7 @@ class PushyAPI:
         postData['data'] = data
 
         # Set URL to Send Notifications API endpoint
-        req = urllib2.Request('https://api.pushy.me/push?api_key=' + apiKey)
+        req = urllib2.Request('https://api.pushy.me/push?api_key=' + pushy_api_key)
 
         # Set Content-Type header since we're sending JSON
         req.add_header('Content-Type', 'application/json')
