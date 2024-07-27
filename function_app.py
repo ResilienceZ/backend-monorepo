@@ -86,6 +86,7 @@ def get_geohash(req: func.HttpRequest) -> func.HttpResponse:
 @app.route(route="bmkg/alert_last_eq")
 def push_disaster_alert(req: func.HttpRequest) -> func.HttpResponse:
         result_message = earthquake_controller.publish_to_pushy_latest_eq()
+        # print(f'result_message {result_message}')
         if result_message == 'Success':
             return func.HttpResponse(
                 f"Request done successfully with message {result_message}",
@@ -98,14 +99,14 @@ def push_disaster_alert(req: func.HttpRequest) -> func.HttpResponse:
                 )
 
 @app.function_name(name="get_eq_data_timer")
-@app.timer_trigger(schedule="*/1 * * * * *", 
-              arg_name="get_eq_data_timer",
+@app.timer_trigger(schedule="*/5 * * * * *", 
+              arg_name="timer",
               run_on_startup=True)
-def get_eq_data_timer(mytimer: func.TimerRequest) -> None:
-
-    push_disaster_alert(None)
+def get_eq_data_timer(timer: func.TimerRequest) -> None:
+    print('in get_eq_data_timer')
+    # result_message = earthquake_controller.publish_to_pushy_latest_eq()
     utc_timestamp = datetime.datetime.utcnow().replace(
         tzinfo=datetime.timezone.utc).isoformat()
-    if mytimer.past_due:
+    if timer.past_due:
         logging.info('The timer is past due!')
     logging.info('Python timer trigger function ran at %s', utc_timestamp)
