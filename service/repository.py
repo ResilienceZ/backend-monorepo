@@ -2,13 +2,24 @@ import service.dbservice as db
 from data.disaster_report import DisasterReport
 from data.disaster_record import DisasterRecord
 
+# Diaster Record
 def get_latest_record(limit: int = 1):
     query = "SELECT * FROM disaster_records ORDER BY timestamp DESC LIMIT %s;"
-    return db.exec_select(query, (limit,))
+    query_result = db.exec_select(query, (limit,))
+    
+    result = []
+    for res in query_result:
+        result.append(DisasterRecord(*res))
+    return result
 
 def get_latest_record_with_type(dtype: str, limit: int = 1):
     query = "SELECT * FROM disaster_records WHERE type=%s ORDER BY timestamp DESC LIMIT %s;"
-    return db.exec_select(query, (dtype, limit,))
+    query_result = db.exec_select(query, (dtype, limit,))
+    
+    result = []
+    for res in query_result:
+        result.append(DisasterRecord(*res))
+    return result
 
 def insert_record(record: DisasterRecord):
     query = """
@@ -23,11 +34,23 @@ def insert_record(record: DisasterRecord):
     
 def get_latest_report(limit: int = 1):
     query = "SELECT * FROM disaster_reports ORDER BY timestamp DESC LIMIT %s;"
-    return db.exec_select(query, (limit,))
+    query_result = db.exec_select(query, (limit,))
     
+    result = []
+    for res in query_result:
+        result.append(DisasterRecord(*res))
+    return result
+    
+    
+# Report
 def get_latest_report_by_geohash(geohash: str, max_timestamp: str, limit: int = 1):
     query = "SELECT * FROM disaster_reports WHERE geohash=%s AND timestamp>%s ORDER BY timestamp DESC LIMIT %s;"
-    return db.exec_select(query, (geohash, max_timestamp, limit,))
+    query_result = db.exec_select(query, (geohash, max_timestamp, limit,))
+    
+    result = []
+    for res in query_result:
+        result.append(DisasterReport(*res))
+    return result
 
 def insert_report(report: DisasterReport):
     query = """
