@@ -4,4 +4,4 @@
 
 azure-functions
 requests
-psycopg
+psycopg2

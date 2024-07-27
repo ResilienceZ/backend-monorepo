@@ -1,8 +1,8 @@
-import psycopg
+import psycopg2
 import os
 
 def exec_select(query: str):
-    conn = psycopg.connect(
+    conn = psycopg2.connect(
         host = os.environ.get('DB_HOST'),
         user = os.environ.get('DB_USERNAME'),
         password = os.environ.get('DB_PASSWORD'),
