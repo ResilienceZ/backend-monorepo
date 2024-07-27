@@ -1,6 +1,7 @@
 import requests
 import constants
 from service.geohash import GeoHash
+from datetime import datetime
 
 def fetch_latest_eq():
     response = requests.get("https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json")
@@ -8,22 +9,41 @@ def fetch_latest_eq():
     data = response.json()
     
     earthquake_obj = data["Infogempa"]["gempa"]
-    lat = float(earthquake_obj["Lintang"].split(" ")[0])
-    long = float(earthquake_obj["Bujur"].split(" ")[0])
-    mag = earthquake_obj["Magnitude"]
+    latitude = float(earthquake_obj["Lintang"].split(" ")[0])
+    longitude = float(earthquake_obj["Bujur"].split(" ")[0])
+    magnitude = float(earthquake_obj["Magnitude"])
     depth = earthquake_obj["Kedalaman"]
+    timestamp = earthquake_obj["DateTime"]
+    print(f'timestamp: {timestamp}')
+    timestamp = timestamp.replace("+00:00", "")
+    timestamp = datetime.fromisoformat(timestamp)
+    print(f'timestamp: {timestamp}')
 
     feel_data = earthquake_obj["Dirasakan"].split(" ")
     feel_scale = feel_data[0]
     feel_zone = feel_data[1:len(feel_data)-1]
 
+    description = earthquake_obj["Wilayah"] + ", " + earthquake_obj["Potensi"]
+
+    # return {
+    #     "lat": lat,
+    #     "long": long,
+    #     "magnitude": mag,
+    #     "depth": depth,
+    #     "feel_scale": feel_scale,
+    #     "feel_zone": feel_zone,
+    #     "timestamp": timestamp,
+    # }
+
     return {
-        "lat": lat,
-        "long": long,
-        "magnitude": mag,
-        "depth": depth,
-        "feel_scale": feel_scale,
-        "feel_zone": feel_zone,
+        "id": None,
+        "description": description,
+        "severity": 0,
+        "scale": magnitude,
+        "longitude": longitude,
+        "latitude": latitude,
+        "type": "earthquake",
+        "timestamp": timestamp
     }
 
 def fetch_latest_15_eq():
@@ -32,10 +52,11 @@ def fetch_latest_15_eq():
     data = response.json()
 
     earthquake_obj = data["Infogempa"]["gempa"]
-    lat = earthquake_obj["Lintang"]
-    long = earthquake_obj["Bujur"]
+    lat = float(earthquake_obj["Lintang"].split(" ")[0])
+    long = float(earthquake_obj["Bujur"].split(" ")[0])
     mag = earthquake_obj["Magnitude"]
     depth = earthquake_obj["Kedalaman"]
+    timestamp = earthquake_obj["DateTime"]
 
     feel_data = earthquake_obj["Dirasakan"].split(" ")
     feel_scale = feel_data[0]
@@ -48,6 +69,7 @@ def fetch_latest_15_eq():
         "depth": depth,
         "feel_scale": feel_scale,
         "feel_zone": feel_zone,
+        "timestamp": timestamp,
     }
 
 def fetch_latest_15_felt_eq():
@@ -56,15 +78,16 @@ def fetch_latest_15_felt_eq():
     data = response.json()
 
     earthquake_obj = data["Infogempa"]["gempa"]
-    lat = earthquake_obj["Lintang"]
-    long = earthquake_obj["Bujur"]
+    lat = float(earthquake_obj["Lintang"].split(" ")[0])
+    long = float(earthquake_obj["Bujur"].split(" ")[0])
     mag = earthquake_obj["Magnitude"]
     depth = earthquake_obj["Kedalaman"]
-    
+    timestamp = earthquake_obj["DateTime"]
+
     feel_data = earthquake_obj["Dirasakan"].split(" ")
     feel_scale = feel_data[0]
     feel_zone = feel_data[1:len(feel_data)-1]
-    
+
     return {
         "lat": lat,
         "long": long,
@@ -72,6 +95,7 @@ def fetch_latest_15_felt_eq():
         "depth": depth,
         "feel_scale": feel_scale,
         "feel_zone": feel_zone,
+        "timestamp": timestamp,
     }
 
 

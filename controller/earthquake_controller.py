@@ -1,9 +1,12 @@
 import service.bmkg as bmkg
 import service.notifier as notifier
 import json
+import service.repository as repo
+from data.disaster_report import DisasterReport
+from data.disaster_record import DisasterRecord
 
 def get_eq_geohash(details):
-	geohash = bmkg.get_geohash(details["lat"], details["long"], "earthquake")
+	geohash = bmkg.get_geohash(details["latitude"], details["longitude"], details["type"])
 	return geohash
 
 def publish_to_pushy_latest_eq():
@@ -24,3 +27,22 @@ def publish_to_pushy_latest_eq():
 		return 'Success'
 	except Exception as err:
 		return err
+
+def is_new_disaster():
+
+	latest_eq = bmkg.fetch_latest_eq()
+	latest_eq_timestamp = latest_eq['timestamp']
+	print(f'latest_eq_timestamp: {str(latest_eq_timestamp)}')
+
+	is_new = True
+
+	last_record = repo.get_latest_record()
+	if len(last_record) > 0:
+		last_timestamp = getattr(last_record[0], 'timestamp')
+		print(f'last_timestamp: {str(last_timestamp)}')
+		if latest_eq_timestamp == last_timestamp:
+			is_new = False
+			return False
+
+	if is_new:
+		repo.insert_record(DisasterRecord(**latest_eq))
