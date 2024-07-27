@@ -14,7 +14,7 @@ class PushyAPI:
         postData['data'] = data
 
         # Set URL to Send Notifications API endpoint
-        req = urllib2.Request('https://api.pushy.me/push?api_key=' + os.environ.get('PUSHY_API_KEY'))
+        req = urllib.Request('https://api.pushy.me/push?api_key=' + os.environ.get('PUSHY_API_KEY'))
 
         # Set Content-Type header since we're sending JSON
         req.add_header('Content-Type', 'application/json')
