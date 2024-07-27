@@ -38,7 +38,7 @@ def get_latest_report(limit: int = 1):
     
     result = []
     for res in query_result:
-        result.append(DisasterRecord(*res))
+        result.append(DisasterReport(*res))
     return result
     
     
