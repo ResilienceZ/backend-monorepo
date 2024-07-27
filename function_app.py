@@ -4,6 +4,7 @@ import service.bmkg as bmkg
 import service.notifier as notifier
 import json
 import os
+import service.repository as repo
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
         
@@ -12,8 +13,10 @@ def listen_disaster_trigger(req: func.HttpRequest) -> func.HttpResponse:
     try:
         demo_data = bmkg.fetch()
         
+        db_data = repo.exec_select("SELECT * FROM disaster_records ORDER BY timestamp DESC LIMIT 1;")
+        
         return func.HttpResponse(
-            json.dumps(demo_data),
+            json.dumps(db_data),
             mimetype="application/json",
             status_code=200
         )
