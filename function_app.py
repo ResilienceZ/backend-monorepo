@@ -1,9 +1,12 @@
 import azure.functions as func
 import logging
-import requests
+import service.bmkg as bmkg
+import service.notifier as notifier
 import json
+import os
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+pushy_api_key = os.environ.get('PUSHY_API_KEY')
 
 @app.route(route="http_trigger")
 def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
@@ -26,32 +29,11 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
             status_code=200
         )
         
-        
-@app.route(route="listen_disaster_trigger")
+@app.route(route="disaster_demo_trigger")
 def listen_disaster_trigger(req: func.HttpRequest) -> func.HttpResponse:
     try:
-        response = requests.get("https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json")
-        response.raise_for_status()
-        data = response.json()
+        demo_data = bmkg.fetch()
         
-        earthquake_obj = data["Infogempa"]["gempa"]
-        lat = earthquake_obj["Lintang"]
-        long = earthquake_obj["Bujur"]
-        mag = earthquake_obj["Magnitude"]
-        depth = earthquake_obj["Kedalaman"]
-        
-        feel_data = earthquake_obj["Dirasakan"].split(" ")
-        feel_scale = feel_data[0]
-        feel_zone = feel_data[1:len(feel_data)-1].join(" ")
-        
-        demo_data = {
-            "lat": lat,
-            "long": long,
-            "magnitude": mag,
-            "depth": depth,
-            "feel_scale": feel_scale,
-            "feel_zone": feel_zone,
-        }
         return func.HttpResponse(
             json.dumps(demo_data),
             mimetype="application/json",
@@ -62,3 +44,10 @@ def listen_disaster_trigger(req: func.HttpRequest) -> func.HttpResponse:
             f"Error. {err}",
             status_code=500
         )
+
+@app.schedule(schedule="0 * * * * *", arg_name="req", run_on_startup=True, use_monitor=False) 
+def timer_trigger(req: func.TimerRequest) -> None:
+    if req.past_due:
+        logging.info('The timer is past due!')
+
+    logging.info('Python timer trigger function executed.')
