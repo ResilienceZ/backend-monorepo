@@ -5,3 +5,4 @@
 azure-functions
 requests
 psycopg2
+tensorflow=="2.15.0"

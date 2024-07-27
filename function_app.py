@@ -8,8 +8,23 @@ import service.repository as repo
 import service.notifier as notifier
 import constants
 import controller.earthquake_controller as earthquake_controller
+import machinelearning.inference as ml
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+        
+@app.route(route="http_trigger")
+def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
+    try:
+        return func.HttpResponse(
+            json.dumps(ml.predict(100.0)),
+            mimetype="application/json",
+            status_code=200
+        )
+    except Exception as err:
+        return func.HttpResponse(
+            f"Error. {err}",
+            status_code=500
+        )
         
 @app.route(route="disaster_demo_trigger")
 def listen_disaster_trigger(req: func.HttpRequest) -> func.HttpResponse:
