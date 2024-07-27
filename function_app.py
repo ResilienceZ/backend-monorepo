@@ -1,5 +1,6 @@
 import azure.functions as func
 import logging
+import datetime
 import service.bmkg as bmkg
 import service.notifier as notifier
 import json
@@ -96,10 +97,15 @@ def push_disaster_alert(req: func.HttpRequest) -> func.HttpResponse:
                     status_code=500
                 )
 
+@app.function_name(name="get_eq_data_timer")
+@app.timer_trigger(schedule="*/1 * * * * *", 
+              arg_name="get_eq_data_timer",
+              run_on_startup=True)
+def get_eq_data_timer(mytimer: func.TimerRequest) -> None:
 
-# @app.schedule(schedule="0 * * * * *", arg_name="req", run_on_startup=True, use_monitor=False) 
-# def timer_trigger(req: func.TimerRequest) -> None:
-#     if req.past_due:
-#         logging.info('The timer is past due!')
-
-#     logging.info('Python timer trigger function executed.')
+    push_disaster_alert(None)
+    utc_timestamp = datetime.datetime.utcnow().replace(
+        tzinfo=datetime.timezone.utc).isoformat()
+    if mytimer.past_due:
+        logging.info('The timer is past due!')
+    logging.info('Python timer trigger function ran at %s', utc_timestamp)
