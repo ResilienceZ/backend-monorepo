@@ -9,8 +9,8 @@ create table public.disaster_records
     description varchar,
     severity    smallint,
     scale       smallint,
-    longitude   numeric(4, 12),
-    latitude    numeric(4, 12),
+    longitude   double precision,
+    latitude    double precision,
     type        varchar,
     timestamp   timestamp default now() not null
 );
@@ -27,8 +27,8 @@ create table public.disaster_reports
         constraint disaster_reports_pk
             primary key,
     reporter_uniqueid varchar                 not null,
-    longitude         numeric(4, 12),
-    latitude          numeric(4, 12),
+    longitude         double precision,
+    latitude          double precision,
     geohash           varchar                 not null,
     type              varchar                 not null,
     timestamp         timestamp default now() not null
