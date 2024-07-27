@@ -10,5 +10,6 @@
     "@azure/functions": "^4.0.0"
   },
   "devDependencies": {},
+  "type": "commonjs",
   "main": "src/{index.js,functions/*.js}"
 }
