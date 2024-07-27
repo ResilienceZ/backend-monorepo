@@ -12,7 +12,7 @@ create table public.disaster_records
     longitude   numeric(4, 12),
     latitude    numeric(4, 12),
     type        varchar,
-    timestamp   timestamp not null
+    timestamp   timestamp default now() not null
 );
 
 alter table public.disaster_records
@@ -26,12 +26,12 @@ create table public.disaster_reports
     id                bigserial
         constraint disaster_reports_pk
             primary key,
-    reporter_uniqueid varchar        not null,
-    longitude         numeric(4, 12) not null,
-    latitude          numeric(4, 12) not null,
-    geohash           varchar        not null,
-    type              varchar        not null,
-    timestamp         timestamp      not null
+    reporter_uniqueid varchar                 not null,
+    longitude         numeric(4, 12),
+    latitude          numeric(4, 12),
+    geohash           varchar                 not null,
+    type              varchar                 not null,
+    timestamp         timestamp default now() not null
 );
 
 alter table public.disaster_reports
