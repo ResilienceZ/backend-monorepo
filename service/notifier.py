@@ -1,7 +1,7 @@
 from service.pushy import PushyAPI
 
-def notify(destination_topic: str, message: str):
-    data = {'message': message}
+def notify(destination_topic: str, data: str, message: str):
+    data = data
 
     to = '/topics/'+destination_topic
 
