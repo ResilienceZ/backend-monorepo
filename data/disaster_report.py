@@ -8,7 +8,7 @@ class DisasterReport:
         self.latitude = latitude
         self.geohash = geohash
         self.type = type
-        self.timestamp = timestamp
+        self.timestamp = str(timestamp)
 
     def __repr__(self):
         return (f"DisasterReport(id={self.id}, reporter_uniqueid={self.reporter_uniqueid}, longitude={self.longitude}, "

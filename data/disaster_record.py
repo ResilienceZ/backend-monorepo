@@ -9,7 +9,7 @@ class DisasterRecord:
         self.longitude = longitude
         self.latitude = latitude
         self.type = type
-        self.timestamp = timestamp
+        self.timestamp = str(timestamp)
 
     def __repr__(self):
         return (f"DisasterRecord(id={self.id}, description={self.description}, severity={self.severity}, "
