@@ -29,4 +29,4 @@ def exec_commit(query: str, values: any):
                 cur.execute(query, values)
             conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
-            print(error) 
+            print(error)

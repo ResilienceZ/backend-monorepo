@@ -5,10 +5,11 @@ import service.bmkg as bmkg
 import service.notifier as notifier
 import json
 import os
-import service.dbservice as repo
+import service.repository as repo
 import service.notifier as notifier
 import constants
 import controller.earthquake_controller as earthquake_controller
+import handler.datatype_handler as datatype_handler
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
         
@@ -16,11 +17,10 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 def listen_disaster_trigger(req: func.HttpRequest) -> func.HttpResponse:
     try:
         demo_data = bmkg.fetch_latest_eq()
-        
-        db_data = repo.exec_select("SELECT * FROM disaster_records ORDER BY timestamp DESC LIMIT 1;")
+        db_data = repo.get_latest_record(1)
         
         return func.HttpResponse(
-            json.dumps(db_data),
+            db_data.toJSON(),
             mimetype="application/json",
             status_code=200
         )
@@ -37,7 +37,7 @@ def get_emergency_contact(req: func.HttpRequest) -> func.HttpResponse:
         emergency_contact = ''
 
         return func.HttpResponse(
-            json.dumps(emergency_contact),
+            emergency_contact.toJSON(),
             mimetype="application/json",
             status_code=200
         )
@@ -109,6 +109,37 @@ def check_for_new_disaster(req: func.HttpRequest) -> func.HttpResponse:
                 f"New disaster detected",
                 status_code=200
                 )
+    except Exception as err:
+        return func.HttpResponse(
+                f"Error. {err}",
+                status_code=500
+            )
+
+@app.route(route="bmkg/get_disaster")
+def get_disaster(req: func.HttpRequest) -> func.HttpResponse:
+    try:
+        req_body = req.get_json()
+        count = req_body.get('count')
+        type = req_body.get('type')
+
+        result = []
+
+        disasters = repo.get_latest_record_with_type(type, count)
+        print(f'disasters: {disasters}')
+
+        for disaster in disasters:
+            print(f'disaster: {disaster}')
+            disaster_json = disaster.toJSON()
+            print(f'disaster_json {disaster_json}')
+            result.append(disaster_json)
+
+        print(f'result: {result}')
+
+        return func.HttpResponse(
+            disasters.toJSON(),
+            mimetype="application/json",
+            status_code=200
+        )
     except Exception as err:
         return func.HttpResponse(
                 f"Error. {err}",
