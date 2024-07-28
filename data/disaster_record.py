@@ -9,7 +9,7 @@ class DisasterRecord:
         self.longitude = longitude
         self.latitude = latitude
         self.type = type
-        self.timestamp = str(timestamp)
+        self.timestamp = timestamp
 
     def __repr__(self):
         return (f"DisasterRecord(id={self.id}, description={self.description}, severity={self.severity}, "
@@ -17,7 +17,13 @@ class DisasterRecord:
                 f"type={self.type}, timestamp={self.timestamp})")
 
     def toJSON(self):
-            return json.dumps(
-                self,
-                default=lambda o: o.__dict__, 
-                sort_keys=True)
+        return {
+            "id": self.id,
+            "description": self.description,
+            "severity": self.severity,
+            "scale": self.scale,
+            "longitude": self.longitude,
+            "latitude": self.latitude,
+            "type": self.type,
+            "timestamp": str(self.timestamp)
+        }

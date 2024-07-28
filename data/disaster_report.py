@@ -8,15 +8,20 @@ class DisasterReport:
         self.latitude = latitude
         self.geohash = geohash
         self.type = type
-        self.timestamp = str(timestamp)
+        self.timestamp = timestamp
 
     def __repr__(self):
         return (f"DisasterReport(id={self.id}, reporter_uniqueid={self.reporter_uniqueid}, longitude={self.longitude}, "
                 f"latitude={self.latitude}, geohash={self.geohash}, type={self.type}, timestamp={self.timestamp})")
         
     def toJSON(self):
-        return json.dumps(
-            self,
-            default=lambda o: o.__dict__, 
-            sort_keys=True)
+        return {
+            "id": self.id,
+            "reporter_uniqueid": self.reporter_uniqueid,
+            "longitude": self.longitude,
+            "latitude": self.latitude,
+            "geohash": self.geohash,
+            "type": self.type,
+            "timestamp": str(self.timestamp)
+        }
 
