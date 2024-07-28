@@ -129,14 +129,14 @@ def get_disaster(req: func.HttpRequest) -> func.HttpResponse:
 
         for disaster in disasters:
             print(f'disaster: {disaster}')
-            disaster_json = disaster
+            disaster_json = disaster.toJSON()
             print(f'disaster_json {disaster_json}')
             result.append(disaster_json)
 
         print(f'result: {result}')
 
         return func.HttpResponse(
-            json.dumps(result),
+            str(result),
             mimetype="application/json",
             status_code=200
         )
